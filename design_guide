@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>네잎클리너 — Design Guide</title>
+  <link rel="preload" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+  <!-- Phosphor Icons -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/bold/style.css" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/fill/style.css" />
+  <style>
+    :root {
+      /* ─── Brand Colors ─── */
+      --color-primary:        #0D9488;
+      --color-primary-dark:   #1A9E93;
+      --color-primary-light:  #F0FDF9;
+      --color-primary-mid:    #CCFBF1;
+
+      /* ─── Text Colors ─── */
+      --color-text:           #000000;
+      --color-text-sub:       #374151;
+      --color-text-muted:     #6B7280;
+      --color-text-on-dark:   #FFFFFF;
+
+      /* ─── Background ─── */
+      --color-bg:             #F5F5F3;
+      --color-surface:        #FFFFFF;
+      --color-surface-alt:    #FAFAF8;
+      --color-border:         #E5E7EB;
+
+      /* ─── Typography ─── */
+      --font-body: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      --letter-spacing: -0.02em;
+
+      /* ─── Font Scale ─── */
+      --fs-display:  3rem;      /* 48px */
+      --fs-title:    2rem;      /* 32px */
+      --fs-body:     1rem;      /* 16px */
+      --fs-caption:  0.875rem;  /* 14px */
+      --fs-badge:    0.75rem;   /* 12px */
+
+      --lh-heading: 1.4;
+      --lh-body:    1.75;
+
+      /* ─── Spacing ─── */
+      --space-xs:  4px;
+      --space-sm:  8px;
+      --space-md:  16px;
+      --space-lg:  24px;
+      --space-xl:  40px;
+      --space-2xl: 64px;
+
+      /* ─── Radius ─── */
+      --radius-sm:   4px;
+      --radius-md:   8px;
+      --radius-lg:   16px;
+      --radius-full: 999px;
+
+      /* ─── Shadow ─── */
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--color-bg);
+      color: var(--color-text-sub);
+      letter-spacing: var(--letter-spacing);
+      line-height: var(--lh-body);
+      font-size: var(--fs-body);
+    }
+
+    /* ─── Header ─── */
+    .ds-header {
+      background: var(--color-primary);
+      color: #fff;
+      padding: var(--space-xl) var(--space-2xl);
+      display: flex;
+      align-items: flex-end;
+      gap: var(--space-lg);
+    }
+    .ds-header__brand {
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: #fff;
+    }
+    .ds-header__brand span {
+      color: rgba(255,255,255,0.55);
+      font-weight: 400;
+      font-size: 1.5rem;
+      margin-left: 8px;
+    }
+    .ds-header__sub {
+      font-size: var(--fs-caption);
+      color: rgba(255,255,255,0.7);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding-bottom: 4px;
+    }
+    .ds-header__meta {
+      margin-left: auto;
+      text-align: right;
+    }
+    .ds-header__meta p {
+      font-size: var(--fs-caption);
+      color: rgba(255,255,255,0.65);
+      line-height: 1.8;
+    }
+    .ds-header__meta a {
+      color: rgba(255,255,255,0.9);
+      text-decoration: underline;
+    }
+
+    /* ─── Nav ─── */
+    .ds-nav {
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-border);
+      padding: 0 var(--space-2xl);
+      display: flex;
+      gap: var(--space-xl);
+      overflow-x: auto;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      scrollbar-width: none;
+    }
+    .ds-nav::-webkit-scrollbar { display: none; }
+    .ds-nav a {
+      font-size: var(--fs-caption);
+      font-weight: 600;
+      color: var(--color-text-muted);
+      text-decoration: none;
+      padding: var(--space-md) 0;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: all 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .ds-nav a:hover, .ds-nav a.active {
+      color: var(--color-primary);
+      border-bottom-color: var(--color-primary);
+    }
+
+    /* ─── Main Layout ─── */
+    .ds-main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: var(--space-2xl) var(--space-xl);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2xl);
+    }
+
+    /* ─── Section Card ─── */
+    .ds-section {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .ds-section__header {
+      padding: var(--space-lg) var(--space-xl);
+      border-bottom: 1px solid var(--color-border);
+      background: var(--color-bg);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    .ds-section__num {
+      width: 28px; height: 28px;
+      background: var(--color-primary);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .ds-section__title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-text);
+      letter-spacing: -0.01em;
+    }
+    .ds-section__body {
+      padding: var(--space-xl);
+    }
+
+    /* ─── Sub Section ─── */
+    .ds-subsection {
+      margin-bottom: var(--space-2xl);
+    }
+    .ds-subsection:last-child { margin-bottom: 0; }
+    .ds-subsection__title {
+      font-size: var(--fs-caption);
+      font-weight: 700;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: var(--space-lg);
+      padding-bottom: var(--space-sm);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    /* ─── Page Structure Table ─── */
+    .structure-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+    .structure-row {
+      display: flex;
+      align-items: stretch;
+      gap: var(--space-md);
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .structure-row__label {
+      background: var(--color-primary);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      padding: var(--space-md) var(--space-lg);
+      min-width: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .structure-row__content {
+      padding: var(--space-md);
+      font-size: var(--fs-caption);
+      color: var(--color-text-sub);
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
+
+    /* ─── Color Swatches ─── */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: var(--space-md);
+    }
+    .color-swatch {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-sm);
+    }
+    .color-swatch__block {
+      height: 72px;
+    }
+    .color-swatch__info {
+      padding: var(--space-sm) var(--space-md);
+      background: var(--color-surface);
+    }
+    .color-swatch__name {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--color-text);
+    }
+    .color-swatch__hex {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      font-family: 'Courier New', monospace;
+      margin-top: 2px;
+    }
+    .color-swatch__role {
+      font-size: 0.6875rem;
+      color: var(--color-text-muted);
+      margin-top: 2px;
+    }
+
+    /* ─── Typography Rows ─── */
+    .type-row {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-xl);
+      padding: var(--space-xl) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .type-row:last-child { border-bottom: none; }
+    .type-meta {
+      width: 200px;
+      flex-shrink: 0;
+    }
+    .type-meta__label {
+      font-size: 0.6875rem;
+      font-weight: 800;
+      color: var(--color-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 8px;
+    }
+    .type-meta__spec {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      font-family: 'Courier New', monospace;
+      line-height: 1.8;
+    }
+    .type-meta__spec .pc { color: var(--color-text-sub); font-weight: 600; }
+    .type-meta__spec .mo { color: var(--color-primary); font-weight: 600; }
+    .type-preview {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+    .type-preview__text {
+      letter-spacing: var(--letter-spacing);
+      color: var(--color-text);
+    }
+
+    /* ─── Breakpoint Visual ─── */
+    .breakpoint-visual {
+      display: flex;
+      gap: var(--space-md);
+      align-items: flex-end;
+    }
+    .bp-item {
+      flex: 1;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+    }
+    .bp-item__bar {
+      background: var(--color-primary);
+      opacity: 0.15;
+    }
+    .bp-item--mobile .bp-item__bar { height: 60px; opacity: 0.25; }
+    .bp-item--tablet .bp-item__bar { height: 90px; opacity: 0.18; }
+    .bp-item--desktop .bp-item__bar { height: 120px; opacity: 0.12; }
+    .bp-item__info {
+      padding: var(--space-md);
+      background: var(--color-surface);
+    }
+    .bp-item__name {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--color-text);
+    }
+    .bp-item__range {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      font-family: 'Courier New', monospace;
+      margin-top: 2px;
+    }
+
+    /* ─── Component Comparison ─── */
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--fs-caption);
+    }
+    .comp-table th {
+      background: var(--color-bg);
+      padding: var(--space-sm) var(--space-md);
+      text-align: left;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-muted);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .comp-table th:first-child { width: 130px; }
+    .comp-table th:nth-child(2) { color: var(--color-text-sub); }
+    .comp-table th:nth-child(3) { color: var(--color-primary); }
+    .comp-table td {
+      padding: var(--space-sm) var(--space-md);
+      border-bottom: 1px solid var(--color-border);
+      color: var(--color-text-sub);
+      vertical-align: top;
+    }
+    .comp-table tr:last-child td { border-bottom: none; }
+    .comp-table td:first-child {
+      font-weight: 700;
+      color: var(--color-text);
+      font-size: 0.8125rem;
+    }
+    .comp-table td code {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 3px;
+      padding: 1px 5px;
+      font-size: 0.75rem;
+      font-family: 'Courier New', monospace;
+      color: var(--color-primary-dark);
+    }
+    .comp-table .mobile-val {
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+
+    /* ─── Layout Wireframe ─── */
+    .wireframe-wrap {
+      display: flex;
+      gap: var(--space-xl);
+      align-items: flex-start;
+    }
+    .wireframe-label {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-sm);
+      text-align: center;
+    }
+    .wireframe {
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--color-surface);
+    }
+    .wireframe--pc { width: 360px; flex-shrink: 0; }
+    .wireframe--mobile { width: 160px; flex-shrink: 0; }
+    .wf-header {
+      background: var(--color-primary);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .wf-header__logo {
+      width: 60px; height: 8px;
+      background: rgba(255,255,255,0.8);
+      border-radius: 4px;
+    }
+    .wf-header__nav {
+      display: flex; gap: 8px;
+    }
+    .wf-header__nav span {
+      width: 28px; height: 6px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 3px;
+    }
+    .wf-header__hamburger {
+      display: flex; flex-direction: column; gap: 3px;
+    }
+    .wf-header__hamburger span {
+      width: 18px; height: 2px;
+      background: rgba(255,255,255,0.8);
+      border-radius: 1px;
+    }
+    .wf-hero {
+      background: linear-gradient(135deg, #0D9488 0%, #1A9E93 100%);
+      padding: 24px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .wf-hero__badge {
+      width: 80px; height: 14px;
+      background: rgba(255,255,255,0.25);
+      border-radius: var(--radius-full);
+    }
+    .wf-hero__title {
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .wf-hero__title span {
+      height: 10px;
+      background: rgba(255,255,255,0.9);
+      border-radius: 3px;
+    }
+    .wf-hero__title span:first-child { width: 100%; }
+    .wf-hero__title span:last-child { width: 70%; }
+    .wf-hero__btns {
+      display: flex; gap: 6px; margin-top: 4px;
+    }
+    .wf-hero__btn {
+      height: 24px;
+      border-radius: var(--radius-full);
+      flex: 1;
+    }
+    .wf-hero__btn--primary { background: rgba(255,255,255,0.95); }
+    .wf-hero__btn--secondary { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); }
+    .wf-section {
+      padding: 14px;
+      border-top: 1px solid var(--color-border);
+    }
+    .wf-section__title {
+      height: 8px; width: 60%;
+      background: var(--color-text);
+      border-radius: 3px;
+      margin-bottom: 10px;
+      opacity: 0.7;
+    }
+    .wf-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .wf-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    .wf-grid-1 { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    .wf-card {
+      background: var(--color-bg);
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+    }
+    .wf-card__img {
+      height: 40px;
+      background: linear-gradient(135deg, #CCFBF1, #A7F3D0);
+    }
+    .wf-card__body { padding: 6px; }
+    .wf-card__line {
+      height: 5px;
+      background: var(--color-border);
+      border-radius: 2px;
+      margin-bottom: 3px;
+    }
+    .wf-card__line:last-child { width: 60%; }
+    .wf-stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; }
+    .wf-stats-grid--2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 6px; }
+    .wf-stat {
+      background: var(--color-bg);
+      border-radius: 6px;
+      padding: 8px 6px;
+      text-align: center;
+      border: 1px solid var(--color-border);
+    }
+    .wf-stat__num {
+      height: 12px; width: 40px;
+      background: var(--color-primary);
+      border-radius: 3px;
+      margin: 0 auto 4px;
+      opacity: 0.7;
+    }
+    .wf-stat__label {
+      height: 5px; width: 80%;
+      background: var(--color-border);
+      border-radius: 2px;
+      margin: 0 auto;
+    }
+    .wf-bottom-bar {
+      background: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+      padding: 8px 14px;
+      display: flex;
+      gap: 6px;
+    }
+    .wf-bottom-bar__btn {
+      flex: 1; height: 28px;
+      border-radius: var(--radius-full);
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+    }
+    .wf-bottom-bar__btn--primary {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      flex: 1.5;
+    }
+
+    /* ─── Button Preview ─── */
+    .btn-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+      align-items: center;
+    }
+    .btn-preview {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-family: var(--font-body);
+      font-size: var(--fs-caption);
+      font-weight: 600;
+      letter-spacing: var(--letter-spacing);
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      padding: 0 var(--space-lg);
+      height: 48px;
+      border-radius: var(--radius-full);
+      white-space: nowrap;
+    }
+    .btn-preview--primary {
+      background: var(--color-primary);
+      color: #fff;
+    }
+    .btn-preview--primary:hover { background: var(--color-primary-dark); }
+    .btn-preview--secondary {
+      background: rgba(13,148,136,0.1);
+      color: var(--color-primary);
+    }
+    .btn-preview--outline {
+      background: transparent;
+      color: var(--color-primary);
+      border: 1.5px solid var(--color-primary);
+    }
+    .btn-preview--text {
+      background: transparent;
+      color: var(--color-primary);
+      text-decoration: underline;
+      height: 44px;
+    }
+
+    /* ─── Checklist ─── */
+    .checklist-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-xl);
+    }
+    .checklist-group__title {
+      font-size: var(--fs-caption);
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: var(--space-md);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .checklist-group__title .ph {
+      color: var(--color-primary);
+      font-size: 1rem;
+    }
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-sm);
+      padding: var(--space-sm) 0;
+      border-bottom: 1px solid var(--color-border);
+      font-size: var(--fs-caption);
+      color: var(--color-text-sub);
+    }
+    .checklist-item:last-child { border-bottom: none; }
+    .checklist-item__box {
+      width: 18px; height: 18px;
+      border: 1.5px solid var(--color-border);
+      border-radius: 4px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .checklist-item code {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 3px;
+      padding: 1px 5px;
+      font-size: 0.7rem;
+      font-family: 'Courier New', monospace;
+      color: var(--color-primary-dark);
+    }
+
+    /* ─── Spacing Table ─── */
+    .spacing-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+    .spacing-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      padding: var(--space-sm) var(--space-md);
+      background: var(--color-bg);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-border);
+    }
+    .spacing-row__label {
+      font-size: var(--fs-caption);
+      font-weight: 700;
+      color: var(--color-text);
+      width: 100px;
+      flex-shrink: 0;
+    }
+    .spacing-row__bar-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    .spacing-row__bar {
+      height: 20px;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-primary-dark));
+      border-radius: 3px;
+      opacity: 0.7;
+    }
+    .spacing-row__val {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      font-family: 'Courier New', monospace;
+      white-space: nowrap;
+    }
+
+    /* ─── Section Divider ─── */
+    .ds-divider {
+      height: 1px;
+      background: var(--color-border);
+      margin: var(--space-xl) 0;
+    }
+
+    /* ─── Highlight Box ─── */
+    .highlight-box {
+      background: var(--color-primary-light);
+      border: 1px solid var(--color-primary-mid);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+      font-size: var(--fs-caption);
+      color: var(--color-primary-dark);
+      line-height: 1.7;
+    }
+    .highlight-box strong { font-weight: 700; color: var(--color-primary); }
+
+    /* ─── Bottom Bar Preview ─── */
+    .bottom-bar-preview {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-md) var(--space-lg);
+      display: flex;
+      gap: var(--space-sm);
+      max-width: 400px;
+    }
+    .bottom-bar-preview .btn-preview {
+      flex: 1;
+      height: 44px;
+      font-size: 0.8125rem;
+    }
+
+    /* ─── Footer ─── */
+    .ds-footer {
+      background: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+      padding: var(--space-xl) var(--space-2xl);
+      text-align: center;
+      font-size: var(--fs-caption);
+      color: var(--color-text-muted);
+    }
+    .ds-footer a {
+      color: var(--color-primary);
+      text-decoration: none;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 768px) {
+      .ds-header { padding: var(--space-xl) var(--space-lg); flex-wrap: wrap; }
+      .ds-header__meta { margin-left: 0; text-align: left; width: 100%; }
+      .ds-nav { padding: 0 var(--space-lg); gap: var(--space-lg); }
+      .ds-main { padding: var(--space-xl) var(--space-md); gap: var(--space-xl); }
+      .ds-section__body { padding: var(--space-lg); }
+      .checklist-grid { grid-template-columns: 1fr; }
+      .wireframe-wrap { flex-direction: column; align-items: center; }
+      .wireframe--pc { width: 100%; max-width: 360px; }
+      .type-row { flex-direction: column; gap: var(--space-md); }
+      .type-meta { width: 100%; }
+      .color-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+      .breakpoint-visual { gap: var(--space-sm); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── Header ─── -->
+<header class="ds-header">
+  <div>
+    <div class="ds-header__brand">네잎클리너 <span>Design Guide</span></div>
+    <div class="ds-header__sub" style="margin-top:6px;"><i class="ph ph-device-mobile" style="margin-right:4px;"></i>Mobile Optimization · Sixshop</div>
+  </div>
+  <div class="ds-header__meta">
+    <p>대상 사이트: <a href="https://4flowerclean.sixshop.site/" target="_blank">4flowerclean.sixshop.site</a></p>
+    <p>플랫폼: 식스샵 (Sixshop)</p>
+    <p>목적: PC 버전 기반 모바일 최적화</p>
+  </div>
+</header>
+
+<!-- ─── Navigation ─── -->
+<nav class="ds-nav">
+  <a href="#structure"><i class="ph ph-layout"></i> 페이지 구조</a>
+  <a href="#colors"><i class="ph ph-palette"></i> 색상</a>
+  <a href="#typography"><i class="ph ph-text-t"></i> 타이포그래피</a>
+  <a href="#layout"><i class="ph ph-ruler"></i> 레이아웃</a>
+  <a href="#components"><i class="ph ph-squares-four"></i> 컴포넌트</a>
+  <a href="#buttons"><i class="ph ph-cursor-click"></i> 버튼</a>
+  <a href="#checklist"><i class="ph ph-check-square"></i> 체크리스트</a>
+  <a href="#spacing"><i class="ph ph-arrows-out-simple"></i> 여백</a>
+</nav>
+
+<main class="ds-main">
+
+  <!-- ─── 1. Page Structure ─── -->
+  <section class="ds-section" id="structure">
+    <div class="ds-section__header">
+      <div class="ds-section__num"><i class="ph ph-layout" style="font-size:0.875rem;"></i></div>
+      <div class="ds-section__title">PC 버전 페이지 구조</div>
+    </div>
+    <div class="ds-section__body">
+      <div class="structure-grid">
+        <div class="structure-row">
+          <div class="structure-row__label">Header</div>
+          <div class="structure-row__content">로고 + GNB (네잎클리너 이야기 / 청소범위 / 자주 묻는 질문 / 견적 문의) + CTA 버튼</div>
+        </div>
+        <div class="structure-row">
+          <div class="structure-row__label">Hero</div>
+          <div class="structure-row__content">풀스크린 배경 이미지 + 메인 카피 + CTA 버튼 2개 + 우측 고정 플로팅 버튼</div>
+        </div>
+        <div class="structure-row">
+          <div class="structure-row__label">Stats</div>
+          <div class="structure-row__content">숫자 통계 4개 — 숨고 평점 / 베테랑 경력 / A/S 보장 / 직영팀</div>
+        </div>
+        <div class="structure-row">
+          <div class="structure-row__label">About</div>
+          <div class="structure-row__content">브랜드 소개 + 이미지 + 특징 4가지 (직영팀 / 친환경 세제 / 꼼꼼함 / A/S)</div>
+        </div>
+        <div class="structure-row">
+          <div class="structure-row__label">Services</div>
+          <div class="structure-row__content">서비스 카드 3개 — 입주청소 / 이사청소 / 거주청소</div>
+        </div>
+        <div class="structure-row">
+          <div class="structure-row__label">Reviews</div>
+          <div class="structure-row__content">슬라이더 형태 리뷰 카드</div>
+        </div>
+        <div class="structure-row">
+          <div class="structure-row__label">Process</div>
+          <div class="structure-row__content">청소 프로세스 슬라이더 (STEP 01 ~ 06)</div>
+        </div>
+        <div class="structure-row">
+          <div class="structure-row__label">CTA</div>
+          <div class="structure-row__content">견적 상담 유도 섹션</div>
+        </div>
+        <div class="structure-row">
+          <div class="structure-row__label">Footer</div>
+          <div class="structure-row__content">로고 + 사이트맵 + SNS 링크 + 사업자 정보</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 2. Colors ─── -->
+  <section class="ds-section" id="colors">
+    <div class="ds-section__header">
+      <div class="ds-section__num"><i class="ph ph-palette" style="font-size:0.875rem;"></i></div>
+      <div class="ds-section__title">Color System</div>
+    </div>
+    <div class="ds-section__body">
+
+      <div class="ds-subsection">
+        <div class="ds-subsection__title">Brand Colors</div>
+        <div class="color-grid">
+          <div class="color-swatch">
+            <div class="color-swatch__block" style="background:#0D9488;"></div>
+            <div class="color-swatch__info">
+              <div class="color-swatch__name">Primary</div>
+              <div class="color-swatch__hex">#0D9488</div>
+              <div class="color-swatch__role">CTA 버튼 · 강조 텍스트</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch__block" style="background:#1A9E93;"></div>
+            <div class="color-swatch__info">
+              <div class="color-swatch__name">Primary Dark</div>
+              <div class="color-swatch__hex">#1A9E93</div>
+              <div class="color-swatch__role">CTA 배경 · 호버</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch__block" style="background:#CCFBF1;"></div>
+            <div class="color-swatch__info">
+              <div class="color-swatch__name">Primary Mid</div>
+              <div class="color-swatch__hex">#CCFBF1</div>
+              <div class="color-swatch__role">강조 배경 · 배지</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch__block" style="background:#F0FDF9; border:1px solid #E5E7EB;"></div>
+            <div class="color-swatch__info">
+              <div class="color-swatch__name">Primary Light</div>
+              <div class="color-swatch__hex">#F0FDF9</div>
+              <div class="color-swatch__role">카드 배경 · 강조 배경</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-subsection">
+        <div class="ds-subsection__title">Background & Surface</div>
+        <div class="color-grid">
+          <div class="color-swatch">
+            <div class="color-swatch__block" style="background:#FFFFFF; border:1px solid #E5E7EB;"></div>
+            <div class="color-swatch__info">
+              <div class="color-swatch__name">White</div>
+              <div class="color-swatch__hex">#FFFFFF</div>
+              <div class="color-swatch__role">기본 배경 · 카드</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch__block" style="background:#FAFAF8; border:1px solid #E5E7EB;"></div>
+            <div class="color-swatch__info">
+              <div class="color-swatch__name">Off White</div>
+              <div class="color-swatch__hex">#FAFAF8</div>
+              <div class="color-swatch__role">프로세스 섹션 배경</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch__block" style="background:#E5E7EB;"></div>
+            <div class="color-swatch__info">
+              <div class="color-swatch__name">Border</div>
+              <div class="color-swatch__hex">#E5E7EB</div>
+              <div class="color-swatch__role">구분선 · 테두리</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-subsection">
+        <div class="ds-subsection__title">Text Colors</div>
+        <div class="color-grid">
+          <div class="color-swatch">
+            <div class="color-swatch__block" style="background:#000000;"></div>
+            <div class="color-swatch__info">
+              <div class="color-swatch__name">Black</div>
+              <div class="color-swatch__hex">#000000</div>
+              <div class="color-swatch__role">본문 텍스트</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch__block" style="background:#374151;"></div>
+            <div class="color-swatch__info">
+              <div class="color-swatch__name">Dark Gray</div>
+              <div class="color-swatch__hex">#374151</div>
+              <div class="color-swatch__role">서브 텍스트</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch__block" style="background:#6B7280;"></div>
+            <div class="color-swatch__info">
+              <div class="color-swatch__name">Gray</div>
+              <div class="color-swatch__hex">#6B7280</div>
+              <div class="color-swatch__role">캡션 · 날짜</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── 3. Typography ─── -->
+  <section class="ds-section" id="typography">
+    <div class="ds-section__header">
+      <div class="ds-section__num"><i class="ph ph-text-t" style="font-size:0.875rem;"></i></div>
+      <div class="ds-section__title">Typography</div>
+    </div>
+    <div class="ds-section__body">
+
+      <div style="display:flex; gap:var(--space-xl); flex-wrap:wrap; margin-bottom:var(--space-xl); padding:var(--space-lg); background:var(--color-bg); border-radius:var(--radius-md); border:1px solid var(--color-border);">
+        <div>
+          <div class="ds-subsection__title" style="margin-bottom:6px;">Font Family</div>
+          <div style="font-size:1.25rem; font-weight:700; color:var(--color-text); letter-spacing:-0.02em;">프리텐다드 (Pretendard)</div>
+          <div style="font-size:var(--fs-caption); color:var(--color-text-muted); margin-top:4px;">본문 · 제목 · UI · 버튼 전체 적용</div>
+        </div>
+        <div style="border-left:1px solid var(--color-border); padding-left:var(--space-xl);">
+          <div class="ds-subsection__title" style="margin-bottom:6px;">Letter Spacing</div>
+          <div style="font-size:1.25rem; font-weight:700; color:var(--color-text); font-family:'Courier New',monospace;">-0.02em</div>
+          <div style="font-size:var(--fs-caption); color:var(--color-text-muted); margin-top:4px;">전체 요소 공통 적용</div>
+        </div>
+      </div>
+
+      <!-- Font Scale Summary Table -->
+      <div class="ds-subsection">
+        <div class="ds-subsection__title">Font Scale — 4단계</div>
+        <table class="comp-table">
+          <thead>
+            <tr>
+              <th>레벨</th>
+              <th>사용처</th>
+              <th style="color:var(--color-text-sub);">PC</th>
+              <th style="color:var(--color-primary);">Mobile</th>
+              <th>Weight</th>
+              <th>Line-height</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Display</td>
+              <td>메인 히어로 타이틀</td>
+              <td><code>48px</code> / 3rem</td>
+              <td class="mobile-val"><code>32px</code> / 2rem</td>
+              <td>700</td>
+              <td>1.4</td>
+            </tr>
+            <tr>
+              <td>Title</td>
+              <td>섹션 제목</td>
+              <td><code>32px</code> / 2rem</td>
+              <td class="mobile-val"><code>24px</code> / 1.5rem</td>
+              <td>700</td>
+              <td>1.5</td>
+            </tr>
+            <tr>
+              <td>Body</td>
+              <td>본문, 카드 텍스트</td>
+              <td><code>16px</code> / 1rem</td>
+              <td class="mobile-val"><code>16px</code> / 1rem</td>
+              <td>400</td>
+              <td>1.75</td>
+            </tr>
+            <tr>
+              <td>Caption</td>
+              <td>부가 정보, 캡션</td>
+              <td><code>14px</code> / 0.875rem</td>
+              <td class="mobile-val"><code>14px</code> / 0.875rem</td>
+              <td>400</td>
+              <td>1.6</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Type Preview Rows -->
+      <div class="ds-subsection">
+        <div class="ds-subsection__title">미리보기</div>
+
+        <div class="type-row">
+          <div class="type-meta">
+            <div class="type-meta__label">Display</div>
+            <div class="type-meta__spec">
+              Font: Pretendard<br>
+              <span class="pc">PC: 48px / 3rem</span><br>
+              <span class="mo">Mobile: 32px / 2rem</span><br>
+              Weight: 700 (Bold)<br>
+              Line-height: 1.4
+            </div>
+          </div>
+          <div class="type-preview">
+            <div class="type-preview__text" style="font-size:clamp(28px,4vw,48px); font-weight:700; line-height:1.4;">먼지 하나 남기지 않겠습니다.</div>
+          </div>
+        </div>
+
+        <div class="type-row">
+          <div class="type-meta">
+            <div class="type-meta__label">Title</div>
+            <div class="type-meta__spec">
+              Font: Pretendard<br>
+              <span class="pc">PC: 32px / 2rem</span><br>
+              <span class="mo">Mobile: 24px / 1.5rem</span><br>
+              Weight: 700 (Bold)<br>
+              Line-height: 1.5
+            </div>
+          </div>
+          <div class="type-preview">
+            <div class="type-preview__text" style="font-size:clamp(22px,3vw,32px); font-weight:700; line-height:1.5;">네잎클리너는, 이렇게 다릅니다</div>
+          </div>
+        </div>
+
+        <div class="type-row">
+          <div class="type-meta">
+            <div class="type-meta__label">Body</div>
+            <div class="type-meta__spec">
+              Font: Pretendard<br>
+              <span class="pc">PC: 16px / 1rem</span><br>
+              <span class="mo">Mobile: 16px / 1rem</span><br>
+              Weight: 400 (Regular)<br>
+              Line-height: 1.75
+            </div>
+          </div>
+          <div class="type-preview">
+            <div class="type-preview__text" style="font-size:16px; font-weight:400; line-height:1.75; color:var(--color-text-sub);">서울 시내 유명 호텔에서 12년간 객실관리직으로 근무하며 컴플레인 제로를 달성한 팀이 그 경험을 토대로 창업한 프리미엄 청소 전문 기업입니다.</div>
+          </div>
+        </div>
+
+        <div class="type-row">
+          <div class="type-meta">
+            <div class="type-meta__label">Caption</div>
+            <div class="type-meta__spec">
+              Font: Pretendard<br>
+              <span class="pc">PC: 14px / 0.875rem</span><br>
+              <span class="mo">Mobile: 14px / 0.875rem</span><br>
+              Weight: 400 (Regular)<br>
+              Line-height: 1.6
+            </div>
+          </div>
+          <div class="type-preview">
+            <div class="type-preview__text" style="font-size:14px; font-weight:400; line-height:1.6; color:var(--color-text-muted);">수도권 전지역 (서울, 경기, 인천) 서비스 가능</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── 4. Layout ─── -->
+  <section class="ds-section" id="layout">
+    <div class="ds-section__header">
+      <div class="ds-section__num"><i class="ph ph-ruler" style="font-size:0.875rem;"></i></div>
+      <div class="ds-section__title">Layout & Breakpoints</div>
+    </div>
+    <div class="ds-section__body">
+
+      <div class="ds-subsection">
+        <div class="ds-subsection__title">반응형 브레이크포인트</div>
+        <div class="breakpoint-visual">
+          <div class="bp-item bp-item--mobile">
+            <div class="bp-item__bar" style="background:var(--color-primary); height:60px;"></div>
+            <div class="bp-item__info">
+              <div class="bp-item__name">Mobile</div>
+              <div class="bp-item__range">320px ~ 767px</div>
+            </div>
+          </div>
+          <div class="bp-item bp-item--tablet">
+            <div class="bp-item__bar" style="background:var(--color-primary); height:90px; opacity:0.6;"></div>
+            <div class="bp-item__info">
+              <div class="bp-item__name">Tablet</div>
+              <div class="bp-item__range">768px ~ 1023px</div>
+            </div>
+          </div>
+          <div class="bp-item bp-item--desktop">
+            <div class="bp-item__bar" style="background:var(--color-primary); height:120px; opacity:0.35;"></div>
+            <div class="bp-item__info">
+              <div class="bp-item__name">Desktop</div>
+              <div class="bp-item__range">1024px 이상</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-subsection">
+        <div class="ds-subsection__title">모바일 그리드 시스템</div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:var(--space-md);">
+          <div style="background:var(--color-bg); border:1px solid var(--color-border); border-radius:var(--radius-md); padding:var(--space-lg);">
+            <div style="font-size:0.6875rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--color-text-muted); margin-bottom:6px;">Columns</div>
+            <div style="font-size:1.5rem; font-weight:800; color:var(--color-primary);">1</div>
+            <div style="font-size:var(--fs-caption); color:var(--color-text-muted); margin-top:2px;">Full Width</div>
+          </div>
+          <div style="background:var(--color-bg); border:1px solid var(--color-border); border-radius:var(--radius-md); padding:var(--space-lg);">
+            <div style="font-size:0.6875rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--color-text-muted); margin-bottom:6px;">Side Padding</div>
+            <div style="font-size:1.5rem; font-weight:800; color:var(--color-primary);">20px</div>
+            <div style="font-size:var(--fs-caption); color:var(--color-text-muted); margin-top:2px;">좌우 여백</div>
+          </div>
+          <div style="background:var(--color-bg); border:1px solid var(--color-border); border-radius:var(--radius-md); padding:var(--space-lg);">
+            <div style="font-size:0.6875rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--color-text-muted); margin-bottom:6px;">Section Padding</div>
+            <div style="font-size:1.5rem; font-weight:800; color:var(--color-primary);">60px</div>
+            <div style="font-size:var(--fs-caption); color:var(--color-text-muted); margin-top:2px;">섹션 상하 여백</div>
+          </div>
+          <div style="background:var(--color-bg); border:1px solid var(--color-border); border-radius:var(--radius-md); padding:var(--space-lg);">
+            <div style="font-size:0.6875rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--color-text-muted); margin-bottom:6px;">Card Gap</div>
+            <div style="font-size:1.5rem; font-weight:800; color:var(--color-primary);">16px</div>
+            <div style="font-size:var(--fs-caption); color:var(--color-text-muted); margin-top:2px;">카드 간격</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PC vs Mobile Wireframe -->
+      <div class="ds-subsection">
+        <div class="ds-subsection__title">PC vs Mobile 레이아웃 비교</div>
+        <div class="wireframe-wrap">
+          <div>
+            <div class="wireframe-label">PC Layout</div>
+            <div class="wireframe wireframe--pc">
+              <div class="wf-header">
+                <div class="wf-header__logo"></div>
+                <div class="wf-header__nav"><span></span><span></span><span></span><span></span></div>
+              </div>
+              <div class="wf-hero">
+                <div class="wf-hero__badge"></div>
+                <div class="wf-hero__title"><span></span><span></span></div>
+                <div class="wf-hero__btns">
+                  <div class="wf-hero__btn wf-hero__btn--primary"></div>
+                  <div class="wf-hero__btn wf-hero__btn--secondary"></div>
+                </div>
+              </div>
+              <div class="wf-section">
+                <div class="wf-stats-grid">
+                  <div class="wf-stat"><div class="wf-stat__num"></div><div class="wf-stat__label"></div></div>
+                  <div class="wf-stat"><div class="wf-stat__num"></div><div class="wf-stat__label"></div></div>
+                  <div class="wf-stat"><div class="wf-stat__num"></div><div class="wf-stat__label"></div></div>
+                  <div class="wf-stat"><div class="wf-stat__num"></div><div class="wf-stat__label"></div></div>
+                </div>
+              </div>
+              <div class="wf-section">
+                <div class="wf-section__title"></div>
+                <div class="wf-grid-3">
+                  <div class="wf-card"><div class="wf-card__img"></div><div class="wf-card__body"><div class="wf-card__line"></div><div class="wf-card__line"></div></div></div>
+                  <div class="wf-card"><div class="wf-card__img"></div><div class="wf-card__body"><div class="wf-card__line"></div><div class="wf-card__line"></div></div></div>
+                  <div class="wf-card"><div class="wf-card__img"></div><div class="wf-card__body"><div class="wf-card__line"></div><div class="wf-card__line"></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="wireframe-label">Mobile Layout</div>
+            <div class="wireframe wireframe--mobile">
+              <div class="wf-header">
+                <div class="wf-header__logo" style="width:40px;"></div>
+                <div class="wf-header__hamburger"><span></span><span></span><span></span></div>
+              </div>
+              <div class="wf-hero" style="padding:20px 10px;">
+                <div class="wf-hero__badge" style="width:60px;"></div>
+                <div class="wf-hero__title"><span></span><span></span></div>
+                <div class="wf-hero__btns" style="flex-direction:column;">
+                  <div class="wf-hero__btn wf-hero__btn--primary" style="height:20px;"></div>
+                  <div class="wf-hero__btn wf-hero__btn--secondary" style="height:20px;"></div>
+                </div>
+              </div>
+              <div class="wf-section">
+                <div class="wf-stats-grid--2">
+                  <div class="wf-stat"><div class="wf-stat__num"></div><div class="wf-stat__label"></div></div>
+                  <div class="wf-stat"><div class="wf-stat__num"></div><div class="wf-stat__label"></div></div>
+                  <div class="wf-stat"><div class="wf-stat__num"></div><div class="wf-stat__label"></div></div>
+                  <div class="wf-stat"><div class="wf-stat__num"></div><div class="wf-stat__label"></div></div>
+                </div>
+              </div>
+              <div class="wf-section">
+                <div class="wf-section__title" style="width:80%;"></div>
+                <div class="wf-grid-1">
+                  <div class="wf-card"><div class="wf-card__img" style="height:50px;"></div><div class="wf-card__body"><div class="wf-card__line"></div><div class="wf-card__line"></div></div></div>
+                  <div class="wf-card"><div class="wf-card__img" style="height:50px;"></div><div class="wf-card__body"><div class="wf-card__line"></div><div class="wf-card__line"></div></div></div>
+                </div>
+              </div>
+              <div class="wf-bottom-bar">
+                <div class="wf-bottom-bar__btn"></div>
+                <div class="wf-bottom-bar__btn"></div>
+                <div class="wf-bottom-bar__btn wf-bottom-bar__btn--primary"></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="flex:1; min-width:200px;">
+            <div class="wireframe-label" style="text-align:left;">주요 변경 포인트</div>
+            <div style="display:flex; flex-direction:column; gap:var(--space-sm);">
+              <div class="highlight-box">
+                <strong>헤더:</strong> GNB → 햄버거 메뉴, 높이 80px → 60px, Fixed 포지션
+              </div>
+              <div class="highlight-box">
+                <strong>히어로:</strong> CTA 버튼 가로 → 세로 배치, 타이틀 48px → 32px
+              </div>
+              <div class="highlight-box">
+                <strong>Stats:</strong> 4열 가로 → 2×2 그리드
+              </div>
+              <div class="highlight-box">
+                <strong>서비스:</strong> 3컬럼 → 1컬럼 세로 스크롤
+              </div>
+              <div class="highlight-box">
+                <strong>플로팅 버튼:</strong> 우측 고정 → 하단 Bottom Bar
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── 5. Components ─── -->
+  <section class="ds-section" id="components">
+    <div class="ds-section__header">
+      <div class="ds-section__num"><i class="ph ph-squares-four" style="font-size:0.875rem;"></i></div>
+      <div class="ds-section__title">컴포넌트별 모바일 가이드</div>
+    </div>
+    <div class="ds-section__body">
+
+      <!-- Header -->
+      <div class="ds-subsection">
+        <div class="ds-subsection__title">Header</div>
+        <table class="comp-table">
+          <thead><tr><th>항목</th><th>PC</th><th>Mobile</th></tr></thead>
+          <tbody>
+            <tr><td>높이</td><td>80px</td><td class="mobile-val">60px</td></tr>
+            <tr><td>배경</td><td>투명 → 스크롤 시 흰색</td><td class="mobile-val">항상 흰색 <code>rgba(255,255,255,0.95)</code></td></tr>
+            <tr><td>GNB</td><td>텍스트 링크 4개</td><td class="mobile-val">햄버거 아이콘 → 풀스크린 메뉴</td></tr>
+            <tr><td>CTA 버튼</td><td>우측 상단 노출</td><td class="mobile-val">메뉴 내 포함</td></tr>
+            <tr><td>Position</td><td>Sticky</td><td class="mobile-val">Fixed</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Hero -->
+      <div class="ds-subsection">
+        <div class="ds-subsection__title">Hero Section</div>
+        <table class="comp-table">
+          <thead><tr><th>항목</th><th>PC</th><th>Mobile</th></tr></thead>
+          <tbody>
+            <tr><td>높이</td><td>100vh</td><td class="mobile-val">100svh (또는 600px)</td></tr>
+            <tr><td>배경 이미지</td><td>가로 와이드</td><td class="mobile-val">object-fit: cover</td></tr>
+            <tr><td>타이틀 크기</td><td>48px</td><td class="mobile-val">32px</td></tr>
+            <tr><td>서브 텍스트</td><td>16px</td><td class="mobile-val">15px</td></tr>
+            <tr><td>CTA 버튼</td><td>가로 2개 나란히</td><td class="mobile-val">세로로 2개 쌓기</td></tr>
+            <tr><td>플로팅 버튼</td><td>전화/카카오/SNS 우측 고정</td><td class="mobile-val">하단 Bottom Bar로 이동</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Stats -->
+      <div class="ds-subsection">
+        <div class="ds-subsection__title">Stats Section</div>
+        <table class="comp-table">
+          <thead><tr><th>항목</th><th>PC</th><th>Mobile</th></tr></thead>
+          <tbody>
+            <tr><td>레이아웃</td><td>4개 가로 배치</td><td class="mobile-val">2×2 그리드</td></tr>
+            <tr><td>숫자 크기</td><td>큰 숫자</td><td class="mobile-val">32px 유지</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Services -->
+      <div class="ds-subsection">
+        <div class="ds-subsection__title">Service Cards</div>
+        <table class="comp-table">
+          <thead><tr><th>항목</th><th>PC</th><th>Mobile</th></tr></thead>
+          <tbody>
+            <tr><td>레이아웃</td><td>3컬럼 가로 배치</td><td class="mobile-val">1컬럼 세로 스크롤</td></tr>
+            <tr><td>카드 배경</td><td><code>#FFFFFF</code></td><td class="mobile-val"><code>#FFFFFF</code></td></tr>
+            <tr><td>Border Radius</td><td><code>16px</code></td><td class="mobile-val"><code>16px</code></td></tr>
+            <tr><td>Card Shadow</td><td><code>0px 4px 80px rgba(0,0,0,0.06)</code></td><td class="mobile-val"><code>0px 2px 20px rgba(0,0,0,0.06)</code></td></tr>
+            <tr><td>이미지</td><td>상단 배치</td><td class="mobile-val">상단 배치 유지</td></tr>
+            <tr><td>CTA 버튼</td><td>카드 하단</td><td class="mobile-val">카드 하단 유지</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Reviews -->
+      <div class="ds-subsection">
+        <div class="ds-subsection__title">Reviews Slider</div>
+        <table class="comp-table">
+          <thead><tr><th>항목</th><th>PC</th><th>Mobile</th></tr></thead>
+          <tbody>
+            <tr><td>레이아웃</td><td>가로 슬라이더 (3개 노출)</td><td class="mobile-val">가로 슬라이더 (1개 노출)</td></tr>
+            <tr><td>Border Radius</td><td><code>9.6px</code></td><td class="mobile-val"><code>12px</code></td></tr>
+            <tr><td>페이지네이션</td><td>좌우 화살표 버튼</td><td class="mobile-val">스와이프 + 하단 도트 인디케이터</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Process -->
+      <div class="ds-subsection">
+        <div class="ds-subsection__title">Process Section</div>
+        <table class="comp-table">
+          <thead><tr><th>항목</th><th>PC</th><th>Mobile</th></tr></thead>
+          <tbody>
+            <tr><td>레이아웃</td><td>텍스트 좌 + 이미지 우 (2컬럼)</td><td class="mobile-val">이미지 상단, 텍스트 하단 (1컬럼)</td></tr>
+            <tr><td>배경</td><td><code>#FAFAF8</code></td><td class="mobile-val"><code>#FAFAF8</code> 유지</td></tr>
+            <tr><td>슬라이더</td><td>하단 도트 네비게이션</td><td class="mobile-val">스와이프 + 도트 인디케이터</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- CTA -->
+      <div class="ds-subsection">
+        <div class="ds-subsection__title">CTA Section</div>
+        <table class="comp-table">
+          <thead><tr><th>항목</th><th>PC</th><th>Mobile</th></tr></thead>
+          <tbody>
+            <tr><td>배경</td><td><code>#1A9E93</code></td><td class="mobile-val"><code>#1A9E93</code> 유지</td></tr>
+            <tr><td>타이틀 크기</td><td>48px</td><td class="mobile-val">28px</td></tr>
+            <tr><td>버튼</td><td>중앙 배치</td><td class="mobile-val">Full Width 버튼</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="ds-subsection">
+        <div class="ds-subsection__title">하단 고정 바 (Bottom Navigation Bar)</div>
+        <div class="highlight-box" style="margin-bottom:var(--space-lg);">
+          PC의 <strong>우측 플로팅 버튼</strong>(전화 문의 / 카카오톡 채널 / 인스타그램 / 유튜브)을 모바일에서는 <strong>하단 고정 바</strong>로 전환합니다.
+        </div>
+        <div style="margin-bottom:var(--space-lg);">
+          <div style="font-size:var(--fs-caption); color:var(--color-text-muted); margin-bottom:var(--space-sm);">미리보기</div>
+          <div class="bottom-bar-preview">
+            <button class="btn-preview btn-preview--outline" style="flex:1; height:44px; font-size:13px;"><i class="ph ph-phone" style="margin-right:4px;"></i>전화 문의</button>
+            <button class="btn-preview btn-preview--outline" style="flex:1; height:44px; font-size:13px;"><i class="ph ph-chat-circle-dots" style="margin-right:4px;"></i>카카오톡</button>
+            <button class="btn-preview btn-preview--primary" style="flex:1.5; height:44px; font-size:13px;"><i class="ph ph-clipboard-text" style="margin-right:4px;"></i>무료 견적받기</button>
+          </div>
+        </div>
+        <table class="comp-table">
+          <thead><tr><th>항목</th><th>스펙</th></tr></thead>
+          <tbody>
+            <tr><td>높이</td><td><code>60px</code></td></tr>
+            <tr><td>배경</td><td><code>#FFFFFF</code></td></tr>
+            <tr><td>상단 Border</td><td><code>1px solid #E5E7EB</code></td></tr>
+            <tr><td>Position</td><td><code>fixed; bottom: 0</code></td></tr>
+            <tr><td>주요 버튼</td><td>전화 문의 / 카카오톡 / 무료 견적받기</td></tr>
+            <tr><td>견적 버튼 색상</td><td><code>#0D9488</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Footer -->
+      <div class="ds-subsection">
+        <div class="ds-subsection__title">Footer</div>
+        <table class="comp-table">
+          <thead><tr><th>항목</th><th>PC</th><th>Mobile</th></tr></thead>
+          <tbody>
+            <tr><td>레이아웃</td><td>4컬럼 가로 배치</td><td class="mobile-val">1컬럼 세로 배치</td></tr>
+            <tr><td>사이트맵</td><td>컬럼별 그룹화</td><td class="mobile-val">아코디언 또는 단순 리스트</td></tr>
+            <tr><td>사업자 정보</td><td>하단</td><td class="mobile-val">하단 유지, 폰트 12px</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── 6. Buttons ─── -->
+  <section class="ds-section" id="buttons">
+    <div class="ds-section__header">
+      <div class="ds-section__num"><i class="ph ph-cursor-click" style="font-size:0.875rem;"></i></div>
+      <div class="ds-section__title">Button Styles</div>
+    </div>
+    <div class="ds-section__body">
+
+      <div class="ds-subsection">
+        <div class="ds-subsection__title">미리보기</div>
+        <div class="btn-showcase">
+          <button class="btn-preview btn-preview--primary">무료 견적 상담받기 <i class="ph ph-arrow-right" style="margin-left:4px;"></i></button>
+          <button class="btn-preview btn-preview--secondary">카카오톡 문의</button>
+          <button class="btn-preview btn-preview--outline">더 알아보기</button>
+          <button class="btn-preview btn-preview--text">자세히 보기 <i class="ph ph-arrow-right" style="margin-left:4px;"></i></button>
+        </div>
+      </div>
+
+      <div class="ds-subsection">
+        <div class="ds-subsection__title">스펙</div>
+        <table class="comp-table">
+          <thead><tr><th>유형</th><th>배경</th><th>텍스트</th><th>Border Radius</th><th>최소 높이</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Primary CTA</td>
+              <td><code>#0D9488</code></td>
+              <td><code>#FFFFFF</code></td>
+              <td><code>100px</code></td>
+              <td><code>48px</code></td>
+            </tr>
+            <tr>
+              <td>Secondary CTA</td>
+              <td><code>rgba(13,148,136,0.1)</code></td>
+              <td><code>#0D9488</code></td>
+              <td><code>100px</code></td>
+              <td><code>48px</code></td>
+            </tr>
+            <tr>
+              <td>Outline</td>
+              <td><code>transparent</code></td>
+              <td><code>#0D9488</code></td>
+              <td><code>100px</code></td>
+              <td><code>44px</code></td>
+            </tr>
+            <tr>
+              <td>Text Link</td>
+              <td><code>transparent</code></td>
+              <td><code>#0D9488</code></td>
+              <td><code>0</code></td>
+              <td><code>44px</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="highlight-box">
+        <strong>터치 영역 규칙:</strong> 모든 버튼 및 링크의 최소 터치 영역은 <strong>44px × 44px</strong> 이상을 확보해야 합니다.
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── 7. Checklist ─── -->
+  <section class="ds-section" id="checklist">
+    <div class="ds-section__header">
+      <div class="ds-section__num"><i class="ph ph-check-square" style="font-size:0.875rem;"></i></div>
+      <div class="ds-section__title">모바일 UX 최적화 체크리스트</div>
+    </div>
+    <div class="ds-section__body">
+      <div class="checklist-grid">
+
+        <div class="checklist-group">
+          <div class="checklist-group__title">성능 (Performance)</div>
+          <div class="checklist-item"><div class="checklist-item__box"></div><span>이미지 Lazy Loading 적용 <code>loading="lazy"</code></span></div>
+          <div class="checklist-item"><div class="checklist-item__box"></div><span>모바일용 이미지 최적화 (WebP, 800px 이하)</span></div>
+          <div class="checklist-item"><div class="checklist-item__box"></div><span>폰트 서브셋 적용 (한글 폰트 용량 최소화)</span></div>
+          <div class="checklist-item"><div class="checklist-item__box"></div><span>불필요한 애니메이션 모바일에서 비활성화</span></div>
+        </div>
+
+        <div class="checklist-group">
+          <div class="checklist-group__title">접근성 & 사용성</div>
+          <div class="checklist-item"><div class="checklist-item__box"></div><span>모든 버튼 최소 터치 영역 <code>44px × 44px</code> 확보</span></div>
+          <div class="checklist-item"><div class="checklist-item__box"></div><span>텍스트 최소 명도 대비 4.5:1 이상</span></div>
+          <div class="checklist-item"><div class="checklist-item__box"></div><span>스크롤 방향 잠금 (가로 슬라이더 내부)</span></div>
+          <div class="checklist-item"><div class="checklist-item__box"></div><span>하단 고정 바가 콘텐츠를 가리지 않도록 <code>padding-bottom</code> 적용</span></div>
+        </div>
+
+        <div class="checklist-group">
+          <div class="checklist-group__title">인터랙션 (Interaction)</div>
+          <div class="checklist-item"><div class="checklist-item__box"></div><span>슬라이더 스와이프 제스처 지원</span></div>
+          <div class="checklist-item"><div class="checklist-item__box"></div><span>버튼 탭 피드백 (<code>:active</code> 상태 스타일)</span></div>
+          <div class="checklist-item"><div class="checklist-item__box"></div><span>햄버거 메뉴 열기/닫기 애니메이션</span></div>
+          <div class="checklist-item"><div class="checklist-item__box"></div><span>스크롤 시 헤더 배경 전환 효과</span></div>
+        </div>
+
+        <div class="checklist-group">
+          <div class="checklist-group__title">폼 (Form)</div>
+          <div class="checklist-item"><div class="checklist-item__box"></div><span>전화번호 입력 필드 <code>type="tel"</code> 적용</span></div>
+          <div class="checklist-item"><div class="checklist-item__box"></div><span>이메일 입력 필드 <code>type="email"</code> 적용</span></div>
+          <div class="checklist-item"><div class="checklist-item__box"></div><span>입력 필드 최소 높이 <code>44px</code> 이상</span></div>
+          <div class="checklist-item"><div class="checklist-item__box"></div><span>키보드 오픈 시 레이아웃 깨짐 방지</span></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 8. Spacing ─── -->
+  <section class="ds-section" id="spacing">
+    <div class="ds-section__header">
+      <div class="ds-section__num"><i class="ph ph-arrows-out-simple" style="font-size:0.875rem;"></i></div>
+      <div class="ds-section__title">섹션별 모바일 여백 가이드</div>
+    </div>
+    <div class="ds-section__body">
+      <div class="spacing-grid">
+        <div class="spacing-row">
+          <div class="spacing-row__label">Hero</div>
+          <div class="spacing-row__bar-wrap">
+            <div class="spacing-row__bar" style="width:0px;"></div>
+            <div class="spacing-row__val">상하 <code>0</code> / 좌우 <code>20px</code></div>
+          </div>
+        </div>
+        <div class="spacing-row">
+          <div class="spacing-row__label">Stats</div>
+          <div class="spacing-row__bar-wrap">
+            <div class="spacing-row__bar" style="width:48px;"></div>
+            <div class="spacing-row__val">상하 <code>48px</code> / 좌우 <code>20px</code></div>
+          </div>
+        </div>
+        <div class="spacing-row">
+          <div class="spacing-row__label">About</div>
+          <div class="spacing-row__bar-wrap">
+            <div class="spacing-row__bar" style="width:60px;"></div>
+            <div class="spacing-row__val">상하 <code>60px</code> / 좌우 <code>20px</code></div>
+          </div>
+        </div>
+        <div class="spacing-row">
+          <div class="spacing-row__label">Services</div>
+          <div class="spacing-row__bar-wrap">
+            <div class="spacing-row__bar" style="width:60px;"></div>
+            <div class="spacing-row__val">상하 <code>60px</code> / 좌우 <code>20px</code></div>
+          </div>
+        </div>
+        <div class="spacing-row">
+          <div class="spacing-row__label">Reviews</div>
+          <div class="spacing-row__bar-wrap">
+            <div class="spacing-row__bar" style="width:60px;"></div>
+            <div class="spacing-row__val">상하 <code>60px</code> / 좌우 <code>20px</code></div>
+          </div>
+        </div>
+        <div class="spacing-row">
+          <div class="spacing-row__label">Process</div>
+          <div class="spacing-row__bar-wrap">
+            <div class="spacing-row__bar" style="width:60px;"></div>
+            <div class="spacing-row__val">상하 <code>60px</code> / 좌우 <code>20px</code></div>
+          </div>
+        </div>
+        <div class="spacing-row">
+          <div class="spacing-row__label">CTA</div>
+          <div class="spacing-row__bar-wrap">
+            <div class="spacing-row__bar" style="width:60px;"></div>
+            <div class="spacing-row__val">상하 <code>60px</code> / 좌우 <code>20px</code></div>
+          </div>
+        </div>
+        <div class="spacing-row">
+          <div class="spacing-row__label">Footer</div>
+          <div class="spacing-row__bar-wrap">
+            <div class="spacing-row__bar" style="width:40px;"></div>
+            <div class="spacing-row__val">상하 <code>40px</code> / 좌우 <code>20px</code></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="ds-footer">
+  <p>네잎클리너 모바일 최적화 디자인 가이드 &nbsp;·&nbsp; <a href="https://4flowerclean.sixshop.site/" target="_blank">4flowerclean.sixshop.site</a></p>
+</footer>
+
+<script>
+  // Active nav highlight on scroll
+  const sections = document.querySelectorAll('.ds-section');
+  const navLinks = document.querySelectorAll('.ds-nav a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => link.classList.remove('active'));
+        const id = entry.target.getAttribute('id');
+        const active = document.querySelector(`.ds-nav a[href="#${id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
