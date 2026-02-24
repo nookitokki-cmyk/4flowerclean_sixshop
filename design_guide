@@ -999,7 +999,7 @@
               <td>Body</td>
               <td>본문, 카드 텍스트</td>
               <td><code>16px</code> / 1rem</td>
-              <td class="mobile-val"><code>16px</code> / 1rem</td>
+              <td class="mobile-val"><code>14px</code> / 0.875rem</td>
               <td>400</td>
               <td>1.75</td>
             </tr>
@@ -1057,7 +1057,7 @@
             <div class="type-meta__spec">
               Font: Pretendard<br>
               <span class="pc">PC: 16px / 1rem</span><br>
-              <span class="mo">Mobile: 16px / 1rem</span><br>
+              <span class="mo">Mobile: 14px / 0.875rem</span><br>
               Weight: 400 (Regular)<br>
               Line-height: 1.75
             </div>
