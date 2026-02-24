@@ -1019,6 +1019,14 @@
               <td>400</td>
               <td>1.6</td>
             </tr>
+            <tr>
+              <td>Label / Badge</td>
+              <td>라벨, 배지, 태그</td>
+              <td><code>12px</code> / 0.75rem</td>
+              <td class="mobile-val"><code>12px</code> / 0.75rem</td>
+              <td>600</td>
+              <td>1.4</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -1104,6 +1112,26 @@
           </div>
           <div class="type-preview">
             <div class="type-preview__text" style="font-size:14px; font-weight:400; line-height:1.6; color:var(--color-text-muted);">수도권 전지역 (서울, 경기, 인천) 서비스 가능</div>
+          </div>
+        </div>
+
+        <div class="type-row">
+          <div class="type-meta">
+            <div class="type-meta__label">Label / Badge</div>
+            <div class="type-meta__spec">
+              Font: Pretendard<br>
+              <span class="pc">PC: 12px / 0.75rem</span><br>
+              <span class="mo">Mobile: 12px / 0.75rem</span><br>
+              Weight: 600 (SemiBold)<br>
+              Line-height: 1.4
+            </div>
+          </div>
+          <div class="type-preview">
+            <div class="type-preview__text">
+              <span style="display:inline-block; font-size:12px; font-weight:600; line-height:1.4; background:var(--color-primary-mid); color:var(--color-primary); padding:3px 10px; border-radius:999px; letter-spacing:0.02em;">입주청소</span>
+              <span style="display:inline-block; font-size:12px; font-weight:600; line-height:1.4; background:var(--color-primary-mid); color:var(--color-primary); padding:3px 10px; border-radius:999px; letter-spacing:0.02em; margin-left:6px;">숨고 4.9점</span>
+              <span style="display:inline-block; font-size:12px; font-weight:600; line-height:1.4; background:var(--color-primary-mid); color:var(--color-primary); padding:3px 10px; border-radius:999px; letter-spacing:0.02em; margin-left:6px;">직영팀</span>
+            </div>
           </div>
         </div>
       </div>
